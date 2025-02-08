@@ -2,13 +2,12 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "@repo/backend-common/config";
 import { middleware } from "./middleware";
-const app = express();
 import { RoomSchema, UserSchema } from "@repo/common/types";
-import { prismaClient } from "@repo/db/client";
-
+import { client } from "@repo/db/client";
+const app = express();
 app.use(express.json());
 
-app.post("/api/v1/excelidraw/sign-up", async (req, res) => {
+app.post("/api/v1/sign-up", async (req, res) => {
   const parsedData = UserSchema.safeParse(req.body);
   if (!parsedData.success) {
     res.json({
@@ -17,7 +16,7 @@ app.post("/api/v1/excelidraw/sign-up", async (req, res) => {
     return;
   }
   try {
-    const createUSer = await prismaClient.user.create({
+    const createUSer = await client.user.create({
       data: {
         name: parsedData.data?.name,
         password: parsedData.data?.password,
@@ -37,7 +36,7 @@ app.post("/api/v1/excelidraw/sign-up", async (req, res) => {
   }
 });
 
-app.post("/api/v1/excelidraw/sign-in", async (req, res) => {
+app.post("/api/v1/sign-in", async (req, res) => {
   const parsedData = UserSchema.safeParse(req.body);
   if (!parsedData.success) {
     res.json({
@@ -45,7 +44,7 @@ app.post("/api/v1/excelidraw/sign-in", async (req, res) => {
     });
     return;
   }
-  const find = await prismaClient.user.findUnique({
+  const find = await client.user.findFirst({
     where: {
       name: parsedData.data?.username,
       password: parsedData.data.password,
@@ -61,7 +60,7 @@ app.post("/api/v1/excelidraw/sign-in", async (req, res) => {
 
   const token = jwt.sign(
     {
-      userId: find.userId,
+      userId: find.id,
     },
     JWT_SECRET
   );
@@ -72,20 +71,20 @@ app.post("/api/v1/excelidraw/sign-in", async (req, res) => {
 
 app.post("/api/v1/room", middleware, async(req, res) => {
   const RoomData = RoomSchema.safeParse(req.body);
-  if(!RoomData){
+  if(!RoomData || RoomData.data?.roomName==undefined || null){
     res.json({
         message : "Incorrect Inputs"
     })
     return ;
   }
-//   @ts-ignore
+  // @ts-ignore
   const userId = req.userId ; 
   
   try{
-  const Room = await prismaClient.room.create({
+  const Room = await client.room.create({
     data:{
-       slug : RoomData.data?.roomName,
-       adminId : userId
+      slug : RoomData.data?.roomName,
+      adminId : userId
     }
   })
   res.json({
@@ -98,7 +97,22 @@ app.post("/api/v1/room", middleware, async(req, res) => {
 }
 });
 
+app.get("/chats/:roomId",async (req,res)=>{
+  const roomId = Number(req.params.roomId);
+  const messages = await client.chat.findMany({
+    where:{
+      roomId : roomId
+    },
+    orderBy:{
+      id:"desc"
+    },
+    take:50
+  });
 
+  res.json({
+    messages
+  })
+})
 
 
 
