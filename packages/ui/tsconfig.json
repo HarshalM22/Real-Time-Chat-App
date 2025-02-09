@@ -3,6 +3,6 @@
   "compilerOptions": {
     "outDir": "dist"
   },
-  "include": ["src"],
+  "include": ["src", "../../apps/frontend/src/components/ChatContainer.tsx", "../../apps/frontend/src/components/Message.tsx", "../../apps/frontend/src/components/Logo.tsx", "../../apps/frontend/src/components/Chatmessage.tsx", "../../apps/frontend/src/components/FormInput.tsx", "../../apps/frontend/src/components/FeatureCard.tsx"],
   "exclude": ["node_modules", "dist"]
 }

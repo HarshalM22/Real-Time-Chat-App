@@ -1,8 +1,9 @@
 "use client"
 
+import { FormInput } from '@/components/FormInput';
+import { Logo } from '@/components/Logo';
 import React, { useState } from 'react';
-import {Logo } from "@repo/ui/Logo"
-import { FormInput } from '@repo/ui/Forminput';
+
 
 export default function SignUpForm () {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,7 +32,7 @@ export default function SignUpForm () {
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
      
     <div className="w-full max-w-md mx-auto bg-white rounded-3xl shadow-xl p-8">
-      <Logo />
+      <Logo label={"Create account"} />
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <FormInput name="fullName" label="Full Name" value={formData.fullName} onChange={handleChange}/>

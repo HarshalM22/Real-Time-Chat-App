@@ -33,7 +33,7 @@ export default function Home() {
             Experience seamless communication with our modern chat platform
           </p>
           <div className="flex gap-4">
-            <button className="px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+            <button  className="px-6 py-3 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
               Get Started
             </button>
             <button className="px-6 py-3 text-blue-600 border-2 border-blue-600 rounded-lg hover:bg-blue-50">

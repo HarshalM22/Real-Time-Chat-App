@@ -1,4 +1,4 @@
-import { Button } from "./button.js";
+import { Button } from "../../../../packages/ui/src/button.jsx";
 export function Navigation () {
     return (
       <nav className={"flex items-center justify-between p-6"}>
