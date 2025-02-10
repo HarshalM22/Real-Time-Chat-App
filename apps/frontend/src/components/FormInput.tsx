@@ -1,6 +1,8 @@
 import { ReactElement } from "react"
 
 interface FormInputProps{
+    name : string
+    value:string 
     type : string
     label : string
     icon? : ReactElement

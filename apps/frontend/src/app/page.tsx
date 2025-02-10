@@ -1,8 +1,13 @@
 
+import Link from "next/link";
 
-export default function Home() {
+
+
+export default async function Home() {
+
   return (
     <div className=" bg-white px-20">
+    
      <nav className="flex items-center justify-between p-6">
       <div className="flex items-center">
         <div className="w-10 h-10 bg-blue-600 rounded-full"></div>
@@ -12,9 +17,8 @@ export default function Home() {
         <a href="#features" className="text-gray-600 hover:text-gray-900">Features</a>
         <a href="#pricing" className="text-gray-600 hover:text-gray-900">Pricing</a>
         <a href="#about" className="text-gray-600 hover:text-gray-900">About</a>
-        <button className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700">
-          Sign Up
-        </button>
+        
+        <Link href={"./signup"}  className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700" > Sign up</Link>
       </div>
     </nav>
 

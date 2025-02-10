@@ -2,6 +2,8 @@
 
 import { FormInput } from '@/components/FormInput';
 import { Logo } from '@/components/Logo';
+import { client } from '@repo/db/client';
+
 import React, { useState } from 'react';
 
 
@@ -15,18 +17,33 @@ export default function SignUpForm () {
     confirmPassword: ''
   });
 
-  const handleSubmit = (e : Event) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
   };
 
-  const handleChange = (e : Event) => {
+  const handleChange = (e) => {
     const { name , value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
+
+  async function createuser(){
+    try {
+      console.log(formData)
+       await client.user.create({
+        data:{
+          email:formData.email,
+          name:formData.fullName,
+          password: formData.confirmPassword
+        }
+      }) 
+    }catch(e){
+      throw new Error(e)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -40,7 +57,7 @@ export default function SignUpForm () {
         <FormInput name="password" type={showPassword ? 'text' : 'password'}label="Password" showPassword={showPassword} onTogglePassword={() => setShowPassword(!showPassword)} value={formData.password} onChange={handleChange}/>
         <FormInput name="confirmPassword" type={showConfirmPassword ? 'text' : 'password'}label="Confirm Password" showPassword={showConfirmPassword} onTogglePassword={() => setShowConfirmPassword(!showConfirmPassword)} value={formData.confirmPassword} onChange={handleChange}/>
 
-        <button type="submit" className="w-full py-3 px-4 bg-blue-500 text-white text-lg rounded-lg hover:bg-blue-600 transition-colors duration-200">
+        <button onClick={createuser} className="w-full py-3 px-4 bg-blue-500 text-white text-lg rounded-lg hover:bg-blue-600 transition-colors duration-200">
           Sign Up
         </button>
 
