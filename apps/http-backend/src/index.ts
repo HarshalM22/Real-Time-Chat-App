@@ -4,7 +4,9 @@ import { JWT_SECRET } from "@repo/backend-common/config";
 import { middleware } from "./middleware";
 import { RoomSchema, UserSchema } from "@repo/common/types";
 import { client } from "@repo/db/client";
+import cors from "cors" ;
 const app = express();
+app.use(cors())
 app.use(express.json());
 
 app.post("/api/v1/sign-up", async (req, res) => {
@@ -111,6 +113,19 @@ app.get("/chats/:roomId",async (req,res)=>{
 
   res.json({
     messages
+  })
+})
+
+app.get("/room/:slug",async (req,res)=>{
+  const slug = req.params.slug ;
+  const room = await client.room.findFirst({
+    where:{
+      slug
+    }
+  });
+
+  res.json({
+    room
   })
 })
 
