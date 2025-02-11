@@ -3,9 +3,10 @@ import { Redirect } from "@/components/Redirect";
 import { Sidebar } from "@/components/Sidebar";
 import { getServerSession } from "next-auth";
 
-export default async function dashboard(){
-  const session = await getServerSession() ;
+export default async function dashboard({params}:any){
 
+  const session = await getServerSession() ;
+  
   if(!session?.user){
     return <Redirect to="/"/>
   }

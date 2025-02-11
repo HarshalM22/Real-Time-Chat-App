@@ -3,8 +3,11 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import {client} from "@repo/db/client"
 import GoogleProvider from "next-auth/providers/google";
 
+import FacebookProvider from "next-auth/providers/facebook";
+
 
 export const authOptions: NextAuthOptions = {
+ 
 providers :[
     CredentialsProvider({
         name: "Credentials",
@@ -35,20 +38,24 @@ providers :[
       GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID || "harshallll",
         clientSecret: process.env.GOOGLE_CLIENT_SECRET || "harshalll"
+      }),
+      FacebookProvider({
+        clientId: process.env.FACEBOOK_CLIENT_ID|| "harshallll",
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "harshalll"
       })
 
 ],
 callbacks: {
+     // Define custom redirection logic for different scenarios
+     async redirect({ url, baseUrl }) {
+       url =  "/dashboard"
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+      // If no valid redirect option is found, default to the base URL
+      return baseUrl;
+    },
     
-    async redirect({ url, baseUrl }) {
-      return baseUrl
-    },
-    async session({ session, user, token }) {
-      return session
-    },
-    async jwt({ token}) {
-      return token
-    },
 },
 session:{
     strategy:"jwt"

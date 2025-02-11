@@ -4,9 +4,10 @@ import { useRouter } from "next/navigation";
 import { ChatItem } from "./ChatItem";
 import axios from "axios";
 import { BACKEND_URL } from "@/app/config";
+import { client } from "@repo/db/client";
 
 
-export function Sidebar ()  {
+export  function Sidebar ()  {
   const [slug,setSlug] = useState("");
   const [roomId,setRoomId] = useState("");
   const router = useRouter() ;
@@ -21,7 +22,11 @@ async function createRoom(){
   setRoomId(response.data.roomId)
 }
 
+async function getRooms (){ 
+  const rooms = await axios.get(`${BACKEND_URL}/room/${slug}`)
+  return rooms.data.roomId ;
 
+}
 
 
     return (
@@ -34,7 +39,7 @@ async function createRoom(){
               createRoom() ;
             }}>Join{roomId}</button>
         </div>
-        
+        { }
         <ChatItem name="Sarah Johnson"/>
         
       </div>
